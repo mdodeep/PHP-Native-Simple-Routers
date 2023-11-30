@@ -44,6 +44,26 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-5">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Page Param</h5>
+                            <p class="card-text">Hi, this is how the <strong>Page Param</strong> page looks like.</p>
+                            <p class="card-text">You can add parameters by using the slash "/"</p>
+                            <p class="card-text"><a class="btn btn-primary btn-sm" href="<?php echo APP_URL . $indexes . '/' . $url_parameter[1] . '/' . $url_parameter[2] . '/' . generateRandomString(); ?>" role="button">Add Random Parameter Value</a></p>
+                            <hr>
+                            <?php
+                            for ($x = 1; $x <= count($url_parameter); $x++) {
+                            ?>
+                                <p class="card-text">Your parameter <?php echo $x; ?> is : <strong><?php echo $url_parameter[$x]; ?></strong></p>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

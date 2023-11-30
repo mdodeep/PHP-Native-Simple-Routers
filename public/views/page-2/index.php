@@ -44,6 +44,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-5">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Page 2</h5>
+                            <p class="card-text">Hi, this is how the <strong>Page 2</strong> page looks like.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
