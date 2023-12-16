@@ -1,13 +1,11 @@
 <?php
 
-$REQUIRED_FILE_CORE = "app/core/"; // Core
-$REQUIRED_FILE_CONFIG = "app/config/"; // Confing
-$REQUIRED_FILE_HELPER = "app/helper/"; // Helper
+define('PNDPATH', true);
 
+$REQUIRED_FILE_CONFIGURATION = dirname(__DIR__) . '/app/configuration/'; // Confing
+$REQUIRED_FILE_CORE = dirname(__DIR__) . '/app/core/'; // Core
+$REQUIRED_FILE_HELPER = dirname(__DIR__) . '/app/helper/'; // Helper
 
-require_once($REQUIRED_FILE_CONFIG . "application.php");
-//require_once($REQUIRED_FILE_CONFIG . "database.php");
-
-// Important line! Do not delete. Contains the router core
-require_once($REQUIRED_FILE_CORE . "router/router.php");
-// Important line! Do not delete. Contains the router core
+require_once($REQUIRED_FILE_CONFIGURATION . 'appConfiguration.php');
+require_once($REQUIRED_FILE_HELPER . 'generalFunction.php');
+require_once($REQUIRED_FILE_CORE . 'appRouter.php');
