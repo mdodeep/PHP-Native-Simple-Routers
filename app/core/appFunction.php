@@ -1,22 +1,14 @@
 <?php
 
-defined('PNDPATH') || exit('Access Denied');
+defined('MDPPATH') || exit('Access Denied');
 
 session_start();
 
 /**
- * Menangani kesalahan atau error dengan HTTP response code dan halaman error yang ditentukan.
- *
- * @param int|null $errorCode Kode error HTTP (default: 500).
- * @param bool $errorPage Indikator apakah halaman error akan dimuat (default: false).
- * @return void
+ * Fungsi untuk menghandle error
  */
-function handleError($errorCode = null, $errorPage = false)
+function handleError(int $errorCode = 500, bool $errorPage = false)
 {
-    if ($errorCode == null) {
-        $errorCode = 500;
-    }
-
     // List of HTTP response status codes
     $httpStatusCodes = [
         100 => 'Continue',
@@ -70,20 +62,15 @@ function handleError($errorCode = null, $errorPage = false)
     header('HTTP/1.1 ' . $errorCode . ' ' . $httpStatusCodes[$errorCode]);
 
     // Load the error page if provided
-    if (isset($errorPage)) {
-        if ($errorPage == true) {
-            require_once('public/template/' . $errorCode . '.php');
-        }
+    if ($errorPage) {
+        require_once('public/template/' . $errorCode . '.php');
     }
 
     exit;
 }
 
 /**
- * Mengevaluasi apakah sebuah folder ada, merupakan direktori, dan dapat dibaca.
- * 
- * @param string $path_folderURL Path ke folder yang ingin dievaluasi.
- * @return bool Mengembalikan true jika folder ada, merupakan direktori, dan dapat dibaca.
+ * Fungsi untuk menghandle folder pada url
  */
 function handleExistFolderURL(string $path_folderURL = null)
 {
@@ -91,10 +78,7 @@ function handleExistFolderURL(string $path_folderURL = null)
 }
 
 /**
- * Fungsi ini untuk memuat file function dan index.php dalam folder yang ditentukan.
- * 
- * @param string $folderURL Nama folder yang ingin dimuat.
- * @return void
+ * Fungsi untuk menghandle url router
  */
 function handleRouterURL(string $folderURL = null)
 {
@@ -115,10 +99,9 @@ function handleRouterURL(string $folderURL = null)
     }
 }
 
+
 /**
- * Fungsi ini untuk mengembalikan alamat IP pengunjung saat ini. 
- * 
- * @return string Alamat IP dari pengunjung saat ini.
+ * Fungsi untuk mengambil ip client
  */
 function getRealIpAddr()
 {
@@ -137,23 +120,63 @@ function getRealIpAddr()
 }
 
 /**
- * Fungsi ini untuk menampilkan link url ke halaman yang ingin dituju.
- * 
- * @param string $routTo Halaman tujuan.
- * @return void
+ * Fungsi untuk meroute dengan link
  */
-function routeTo($routeTo = null)
+function routeTo(string $routeTo = null)
 {
     echo APP_URL . $routeTo;
 }
 
 /**
- * Fungsi ini untuk mengalihkan otomatis ke halaman yang ingin dituju.
- * 
- * @param string $routTo Halaman tujuan.
- * @return void
+ * Fungsi untuk meredirect
  */
-function redirectToPage($redirectDestination)
+function redirectToPage(string $redirectDestination)
 {
     return header('location:' . APP_URL . $redirectDestination, true, 301);
+}
+
+/**
+ * Fungsi untuk mengenkode string
+ */
+function encodeThis(string $plainText)
+{
+    $key = base64_decode(APP_ENCRYPTION_KEY);
+
+    // Generate initialization vector
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+
+    // Encrypt the plaintext
+    $cipherText = openssl_encrypt($plainText, 'aes-256-cbc', $key, 0, $iv);
+
+    // Combine IV and ciphertext for secure storage
+    $encryptedData = base64_encode($iv . $cipherText);
+
+    return $encryptedData;
+}
+
+/**
+ * Fungsi untuk mendekode string
+ */
+function decodeThis(string $hashText)
+{
+    $key = base64_decode(APP_ENCRYPTION_KEY);
+
+    // Decode the base64 encoded string
+    $encryptedData = base64_decode($hashText);
+
+    // Extract IV and ciphertext
+    $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+    $iv = substr($encryptedData, 0, $ivLength);
+    $cipherText = substr($encryptedData, $ivLength);
+
+    // Decrypt the ciphertext
+    $plainText = openssl_decrypt($cipherText, 'aes-256-cbc', $key, 0, $iv);
+
+    return $plainText;
+}
+
+function handleDataInput(string $inputName)
+{
+    global $conn;
+    return htmlentities(mysqli_real_escape_string($conn, strip_tags(trim($_POST[$inputName]))));
 }

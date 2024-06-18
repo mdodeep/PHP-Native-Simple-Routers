@@ -1,29 +1,27 @@
 <?php
 
-defined('PNDPATH') || exit('Access Denied');
+defined('MDPPATH') || exit('Access Denied');
 
-// Important line! Do not delete. Contains the router core
-define('APP_URL', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/"); // Definisi Pendeteksi URL
-define('APP_PATH', dirname(dirname(__DIR__))); // Definisi Folder App
-// Important line! Do not delete. Contains the router core
+// Penting ! Jangan Pernah Mengubah Atau Menghapus Baris Ini.
+define('APP_URL', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/");
+define('APP_PATH', dirname(dirname(__DIR__)));
+// --------------------------------------------------------------------
 
-// You can change this according to your needs
-define('DEFAULT_HOME', 'dashboard'); // You can change the name of the folder designated as the main page.
-define('APP_ASSETS_PATH', APP_URL . 'assets/'); // You can change the name of the folder designated as the asset page for your site or application.
-//define('APP_ENCRYPTION_SALT', '$2$md');
-//define('APP_ENCRYPTION_KEY', base64_encode('MDODYPROJECT'));
-//define('MAX_LOGIN_ATTEMPTS', 3);
-//define('LOGIN_ATTEMPT_TIMEOUT', 300);
-
-/**
- * You can change and adjust your MySQL account data
- */
+// Koneksi untuk menyambungkan aplikasi dengan database MYSQL
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'mdmemberarea');
+define('DB_NAME', 'belajar');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-if (mysqli_connect_errno()) {
-    exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+if ($conn->connect_error) {
+    exit("Failed to connect to MySQL : (" . $conn->connect_errno . ") " . $conn->connect_error);
 }
-// You can change this according to your needs
+// --------------------------------------------------------------------
+
+define('DEFAULT_HOME', 'dashboard'); // 'dashboard' Dapat kamu ganti dengan halaman yang ingin kamu gunakan sebagai tampilan aplikasi.
+define('APP_ASSETS_PATH', APP_URL . 'assets/'); // 'assets/' Dapat kamu sesuaikan dengan nama folder tempat penyimpanan assets CSS,JS dll.
+
+// Konfigurasi opsional yang dapat kamu ubah, hapus, atau tambahkan sesuai dengan kebutuhan aplikasi kamu.
+define('APP_NAME', 'MDPROJECT-ROUTER');
+define('APP_ENCRYPTION_KEY', base64_encode('MDODYPROJECT'));
+// --------------------------------------------------------------------

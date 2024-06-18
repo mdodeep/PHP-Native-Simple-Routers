@@ -1,6 +1,6 @@
 <?php
 
-defined('PNDPATH') || exit('Access Denied');
+defined('MDPPATH') || exit('Access Denied');
 
 require_once('appFunction.php');
 
